@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Room:BaseEntity
+    public class Room : BaseEntity
     {
-        public int CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         public string Description { get; set; }
 
         // room ve product arasındaki ilişki

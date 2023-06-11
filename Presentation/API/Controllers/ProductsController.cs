@@ -12,34 +12,27 @@ namespace API.Controllers
         readonly private IProductWriteRepository _productWriteRepository;
         readonly private IProductReadRepository _productReadRepository;
 
-        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository)
+        readonly private IRoomWriteRepository _roomWriteRepository;
+        readonly private IRoomReadRepository _roomReadRepository;
+
+        readonly private ICustomerWriteRepository _customerWriteRepository;
+
+
+        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IRoomWriteRepository roomWriteRepository, ICustomerWriteRepository customerWriteRepository, IRoomReadRepository roomReadRepository)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
+            _roomWriteRepository = roomWriteRepository;
+            _customerWriteRepository = customerWriteRepository;
+            _roomReadRepository = roomReadRepository;
         }
 
         [HttpGet]
         public async Task Get()
         {
-            //_productWriteRepository.AddRangeAsync(new()
-            //{
-            //    new(){Id = Guid.NewGuid(),Name="Product1",Price=100,CreatedDate=DateTime.UtcNow,Stock=10},
-            //    new(){Id = Guid.NewGuid(),Name="Product2",Price=200,CreatedDate=DateTime.UtcNow,Stock=20},
-            //    new(){Id = Guid.NewGuid(),Name="Product3",Price=300,CreatedDate=DateTime.UtcNow,Stock=30},
-            //    new(){Id = Guid.NewGuid(),Name="Product4",Price=400,CreatedDate=DateTime.UtcNow,Stock=40},
-            //});
-            //await _productWriteRepository.SaveAsync();
-
-            Product product = await _productReadRepository.GetByIdAsync("5d825d9a-e7c5-421b-9dda-5019d611d33a");
-            product.Name = "Mete";
-            await _productWriteRepository.SaveAsync();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
-        {
-            Product product = await _productReadRepository.GetByIdAsync(id);
-            return Ok(product);
+            Room room = await _roomReadRepository.GetByIdAsync("75756d89-851f-4396-6b00-08db6a6d6af8");
+            room.Description = "Testtest";
+            await _roomWriteRepository.SaveAsync();
         }
     }
 }
