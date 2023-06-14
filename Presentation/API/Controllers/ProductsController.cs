@@ -28,11 +28,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task Get()
+        public async Task<IActionResult> Get()
         {
-            Room room = await _roomReadRepository.GetByIdAsync("75756d89-851f-4396-6b00-08db6a6d6af8");
-            room.Description = "Testtest";
-            await _roomWriteRepository.SaveAsync();
+            return Ok();
         }
     }
 }
