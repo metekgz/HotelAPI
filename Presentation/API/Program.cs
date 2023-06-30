@@ -1,8 +1,9 @@
 using Application.Validators.Products;
 using FluentValidation.AspNetCore;
+using Infrastructure.Services;
 using Infrastructure;
-using Infrastructure.Filters;
 using Persistence;
+using Infrastructure.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
