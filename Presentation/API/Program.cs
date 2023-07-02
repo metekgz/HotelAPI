@@ -4,6 +4,8 @@ using Infrastructure.Services;
 using Infrastructure;
 using Persistence;
 using Infrastructure.Filters;
+using Infrastructure.Services.Storage.Local;
+using Infrastructure.Enums;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddPersistenceServices();
 
 builder.Services.AddInfrastructureServices();
+
+builder.Services.AddStorage<LocalStorage>();
+
+// Bu þekilde de kullanýlabilir
+//builder.Services.AddStorage<StorageType.Local>();
 
 // verilen linkdeki bütün headerlara, tüm methodlara izin ver
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod()));
