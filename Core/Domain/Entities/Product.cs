@@ -16,5 +16,6 @@ namespace Domain.Entities
         // product ve room arasında çok'a çok ilişki olduğunu ifade etmek için product classına da room'ı koyarız
         // her product'ın birden fazla room olduğu ifade edilir
         public ICollection<Room> Rooms { get; set; }
+        public ICollection<ProductImageFile> ProductImageFiles { get; }
     }
 }
