@@ -6,12 +6,15 @@ using Persistence;
 using Infrastructure.Filters;
 using Infrastructure.Services.Storage.Local;
 using Infrastructure.Enums;
+using Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddPersistenceServices();
+
+builder.Services.AddApplicationServices();
 
 builder.Services.AddInfrastructureServices();
 
