@@ -1,5 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Entities.Common;
+using Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Contexts
 {
-    public class HotelAPIDbContext : DbContext
+    public class HotelAPIDbContext : IdentityDbContext<AppUser,AppRole,string>
     {
         public HotelAPIDbContext(DbContextOptions options) : base(options)
         { }

@@ -1,5 +1,4 @@
-﻿using Application.Abstractions.Storage;
-using Application.Features.Commands.Product.CreateProduct;
+﻿using Application.Features.Commands.Product.CreateProduct;
 using Application.Features.Commands.Product.RemoveProduct;
 using Application.Features.Commands.Product.UpdateProduct;
 using Application.Features.Commands.ProductImageFile.RemoveProductImage;
@@ -7,14 +6,8 @@ using Application.Features.Commands.ProductImageFile.UploadProductImage;
 using Application.Features.Queries.Product.GetAllProduct;
 using Application.Features.Queries.Product.GetByIdProduct;
 using Application.Features.Queries.ProductImageFile.GetProductImages;
-using Application.Repositories;
-using Application.RequestParameters;
-using Application.ViewModels.Products;
-using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace API.Controllers
