@@ -37,7 +37,7 @@ namespace Application.Features.Commands.AppUser.CreateUser
 
             else
                 foreach (var error in result.Errors)
-                    response.Message += $"{error.Code} - {error.Description}<br>";
+                    response.Message += $"{error.Code} - {error.Description}\n";
 
             return response;
             //throw new UserCreateFailedException();
