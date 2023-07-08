@@ -7,6 +7,9 @@ using Infrastructure.Filters;
 using Infrastructure.Services.Storage.Local;
 using Infrastructure.Enums;
 using Application;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,20 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 
 builder.Services.AddStorage<LocalStorage>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer("Admin", options =>
+{
+    options.TokenValidationParameters = new()
+    {
+        ValidateAudience = true, // Oluþturulacak token deðerini kimlerin/hangi originlerin/sitelerin kullanýcý belirlediðimiz deðeridir
+        ValidateIssuer = true, // Oluþturulacak token deðerini kimin daðýttýðýðý ifade edeceðimiz alandýr
+        ValidateLifetime = true, // Oluþturulan token deðerinin süresini kontrol edecek doðrulamadýr
+        ValidateIssuerSigningKey = true, // Üretilecek token deðerinin uygulamamýza ait bir deðer olduðunu ifade eden security key verisinin doðrulamasýdýr
+        ValidAudience = builder.Configuration["Token:Audience"],
+        ValidIssuer = builder.Configuration["Token:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"]))
+    };
+});
 
 // Bu þekilde de kullanýlabilir
 //builder.Services.AddStorage<StorageType.Local>();
@@ -46,6 +63,8 @@ app.UseStaticFiles();
 app.UseCors();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
