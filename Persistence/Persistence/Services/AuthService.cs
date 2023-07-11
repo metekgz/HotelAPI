@@ -2,18 +2,10 @@
 using Application.Abstractions.Token;
 using Application.DTOs;
 using Application.Exceptions;
-using Application.Features.Commands.AppUser.LoginUser;
-using Azure.Core;
 using Domain.Entities.Identity;
 using Google.Apis.Auth;
-using Google.Apis.Auth.OAuth2;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Services
 {
@@ -22,11 +14,13 @@ namespace Persistence.Services
         readonly UserManager<AppUser> _userManager;
         readonly ITokenHandler _tokenHandler;
         readonly SignInManager<AppUser> _signInManager;
-        public AuthService(UserManager<AppUser> userManager, ITokenHandler tokenHandler, SignInManager<AppUser> signInManager)
+        readonly IUserService _userService;
+        public AuthService(UserManager<AppUser> userManager, ITokenHandler tokenHandler, SignInManager<AppUser> signInManager, IUserService userService)
         {
             _userManager = userManager;
             _tokenHandler = tokenHandler;
             _signInManager = signInManager;
+            _userService = userService;
         }
 
 
@@ -64,13 +58,15 @@ namespace Persistence.Services
                 }
             }
             if (result)
+            {
                 await _userManager.AddLoginAsync(user, info);
+                Token token = _tokenHandler.CreateAccessToken(accessTokenLifeTime);
+                await _userService.UpdateRefleshToken(token.RefleshToken, user, token.Expiration, 30);
+                return token;
+            }
             else
                 throw new Exception("Doğrulama Geçersiz");
 
-
-            Token token = _tokenHandler.CreateAccessToken(10);
-            return token;
         }
 
         public async Task<Token> LoginAsync(string userNameOrEmail, string password, int accessTokenLifeTime)
@@ -85,10 +81,25 @@ namespace Persistence.Services
             if (result.Succeeded)
             {
                 Token token = _tokenHandler.CreateAccessToken(accessTokenLifeTime);
-
+                await _userService.UpdateRefleshToken(token.RefleshToken, user, token.Expiration, 30);
                 return token;
             }
-            throw new AuthenticationErrorException();
+            else
+                throw new AuthenticationErrorException();
+        }
+
+        public async Task<Token> RefleshTokenLoginAsync(string refleshToken)
+        {
+            AppUser? user = await _userManager.Users.FirstOrDefaultAsync(u => u.RefleshToken == refleshToken);
+
+            if (user != null && user?.RefleshTokenEndDate > DateTime.UtcNow)
+            {
+                Token token = _tokenHandler.CreateAccessToken(15);
+                await _userService.UpdateRefleshToken(token.RefleshToken, user, token.Expiration, 30);
+                return token;
+            }
+            else
+                throw new NotFoundUserException();
         }
     }
 }

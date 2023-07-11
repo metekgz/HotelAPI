@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace Infrastructure.Services.Token
             SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256);
 
             // Oluşturulacak token ile ilgli ayarlar
-            token.Expiration = DateTime.UtcNow.AddMinutes(second);
+            token.Expiration = DateTime.UtcNow.AddSeconds(second);
             JwtSecurityToken jwtSecurityToken = new(
                 audience: _configuration["Token:Audience"],
                 //expires: DateTime.Now.AddMinutes(minute),
@@ -42,7 +43,20 @@ namespace Infrastructure.Services.Token
             // token oluşturucu sınıfından örnek alma
             JwtSecurityTokenHandler tokenHandler = new();
             token.AccessToken = tokenHandler.WriteToken(jwtSecurityToken);
+
+            token.RefleshToken = CreateRefreshToken();
+            
             return token;
+        }
+
+        public string CreateRefreshToken()
+        {
+            byte[] number = new byte[32];
+
+            using RandomNumberGenerator random = RandomNumberGenerator.Create();
+            random.GetBytes(number);
+            // metinsel hala almak için tobase64string kullandım
+            return Convert.ToBase64String(number);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Application.Features.Commands.AppUser.GoogleLogin;
 using Application.Features.Commands.AppUser.LoginUser;
+using Application.Features.Commands.AppUser.RefleshTokenLogin;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -28,6 +28,13 @@ namespace API.Controllers
         public async Task<IActionResult> GoogleLogin(GoogleLoginCommandRequest googleLoginCommandRequest)
         {
             GoogleLoginCommandResponse response = await _mediator.Send(googleLoginCommandRequest);
+            return Ok(response);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RefleshTokenLogin([FromBody] RefleshTokenLoginCommandRequest refleshTokenLoginCommandRequest)
+        {
+            RefleshTokenLoginCommandResponse response = await _mediator.Send(refleshTokenLoginCommandRequest);
             return Ok(response);
         }
     }

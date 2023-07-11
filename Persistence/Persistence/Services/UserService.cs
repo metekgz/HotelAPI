@@ -1,14 +1,8 @@
 ﻿using Application.Abstractions.Services;
 using Application.DTOs.User;
-using Application.Features.Commands.AppUser.CreateUser;
-using Azure.Core;
+using Application.Exceptions;
 using Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Services
 {
@@ -45,6 +39,18 @@ namespace Persistence.Services
             return response;
 
             //throw new UserCreateFailedException();
+        }
+
+        public async Task UpdateRefleshToken(string refleshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate)
+        {
+            if (user != null)
+            {
+                user.RefleshToken = refleshToken;
+                user.RefleshTokenEndDate = accessTokenDate.AddSeconds(addOnAccessTokenDate);
+                await _userManager.UpdateAsync(user);
+            }
+            else
+                throw new NotFoundUserException();
         }
     }
 }

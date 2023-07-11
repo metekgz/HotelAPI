@@ -1,13 +1,5 @@
 ﻿using Application.Abstractions.Services;
-using Application.Abstractions.Token;
-using Application.DTOs;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Commands.AppUser.GoogleLogin
 {
