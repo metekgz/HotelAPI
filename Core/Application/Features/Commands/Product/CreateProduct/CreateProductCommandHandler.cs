@@ -1,21 +1,18 @@
 ﻿using Application.Repositories;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.Commands.Product.CreateProduct
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommandRequest, CreateProductCommandResponse>
     {
         readonly IProductWriteRepository _productWriteRepository;
+        readonly ILogger<CreateProductCommandHandler> _logger;
 
-        public CreateProductCommandHandler(IProductWriteRepository productWriteRepository)
+        public CreateProductCommandHandler(IProductWriteRepository productWriteRepository, ILogger<CreateProductCommandHandler> logger)
         {
             _productWriteRepository = productWriteRepository;
+            _logger = logger;
         }
 
         public async Task<CreateProductCommandResponse> Handle(CreateProductCommandRequest request, CancellationToken cancellationToken)
@@ -27,6 +24,7 @@ namespace Application.Features.Commands.Product.CreateProduct
                 Stock = request.Stock,
             });
             await _productWriteRepository.SaveAsync();
+            _logger.LogInformation("Product Eklendi");
             return new();
         }
     }

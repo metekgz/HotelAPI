@@ -1,10 +1,6 @@
 ﻿using Application.Repositories;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.Commands.Product.UpdateProduct
 {
@@ -12,11 +8,12 @@ namespace Application.Features.Commands.Product.UpdateProduct
     {
         readonly IProductReadRepository _productReadRepository;
         readonly IProductWriteRepository _productWriteRepository;
-
-        public UpdateProductCommandHandler(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository)
+        readonly ILogger<UpdateProductCommandHandler> _logger;
+        public UpdateProductCommandHandler(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, ILogger<UpdateProductCommandHandler> logger)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
+            _logger = logger;
         }
 
         public async Task<UpdateProductCommandResponse> Handle(UpdateProductCommandRequest request, CancellationToken cancellationToken)
@@ -26,6 +23,7 @@ namespace Application.Features.Commands.Product.UpdateProduct
             product.Price = request.Price;
             product.Stock = request.Stock;
             await _productWriteRepository.SaveAsync();
+            _logger.LogInformation("Product Güncellendi");
             return new();
         }
     }

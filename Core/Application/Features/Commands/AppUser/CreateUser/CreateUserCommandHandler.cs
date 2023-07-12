@@ -1,23 +1,19 @@
 ﻿using Application.Abstractions.Services;
 using Application.DTOs.User;
-using Application.Exceptions;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.Commands.AppUser.CreateUser
 {
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommandRequest, CreateUserCommandResponse>
     {
         readonly IUserService _userService;
+        readonly ILogger<CreateUserCommandHandler> _logger;
 
-        public CreateUserCommandHandler(IUserService userService)
+        public CreateUserCommandHandler(IUserService userService, ILogger<CreateUserCommandHandler> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         public async Task<CreateUserCommandResponse> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
@@ -30,7 +26,7 @@ namespace Application.Features.Commands.AppUser.CreateUser
                 ConfirmPassword = request.ConfirmPassword,
                 UserName = request.UserName
             });
-
+            _logger.LogInformation("Yeni User Eklendi");
             return new()
             {
                 Message = response.Message,

@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Storage;
 using Application.Repositories;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,14 @@ namespace Application.Features.Commands.ProductImageFile.UploadProductImage
         readonly IProductReadRepository _productReadRepository;
         readonly IProductImageFileWriteRepository _productImageFileWriteRepository;
         readonly IStorageService _storageService;
+        readonly ILogger<UploadProductImageCommandHandler> _logger;
 
-        public UploadProductImageCommandHandler(IProductReadRepository productReadRepository, IProductImageFileWriteRepository productImageFileWriteRepository, IStorageService storageService)
+        public UploadProductImageCommandHandler(IProductReadRepository productReadRepository, IProductImageFileWriteRepository productImageFileWriteRepository, IStorageService storageService, ILogger<UploadProductImageCommandHandler> logger)
         {
             _productReadRepository = productReadRepository;
             _productImageFileWriteRepository = productImageFileWriteRepository;
             _storageService = storageService;
+            _logger = logger;
         }
 
         public async Task<UploadProductImageCommandResponse> Handle(UploadProductImageCommandRequest request, CancellationToken cancellationToken)
@@ -39,6 +42,7 @@ namespace Application.Features.Commands.ProductImageFile.UploadProductImage
             }).ToList());
 
             await _productImageFileWriteRepository.SaveAsync();
+            _logger.LogInformation("Ürün resmi Güncellendi");
             return new();
         }
     }

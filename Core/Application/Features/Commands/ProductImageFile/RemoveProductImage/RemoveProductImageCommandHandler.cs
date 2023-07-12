@@ -1,12 +1,7 @@
 ﻿using Application.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.Commands.ProductImageFile.RemoveProductImage
 {
@@ -14,10 +9,12 @@ namespace Application.Features.Commands.ProductImageFile.RemoveProductImage
     {
         readonly IProductReadRepository _productReadRepository;
         readonly IProductWriteRepository _productWriteRepository;
-        public RemoveProductImageCommandHandler(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository)
+        readonly ILogger<RemoveProductImageCommandHandler> _logger;
+        public RemoveProductImageCommandHandler(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, ILogger<RemoveProductImageCommandHandler> logger)
         {
             _productReadRepository = productReadRepository;
             _productWriteRepository = productWriteRepository;
+            _logger = logger;
         }
 
         public async Task<RemoveProductImageCommandResponse> Handle(RemoveProductImageCommandRequest request, CancellationToken cancellationToken)
@@ -29,6 +26,7 @@ namespace Application.Features.Commands.ProductImageFile.RemoveProductImage
                 product?.ProductImageFiles.Remove(productImageFile);
 
             await _productWriteRepository.SaveAsync();
+            _logger.LogInformation("Ürün Resmi Silindi");
             return new();
         }
     }
