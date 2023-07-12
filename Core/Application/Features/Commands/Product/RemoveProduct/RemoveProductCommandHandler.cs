@@ -1,12 +1,6 @@
-﻿using Application.Features.Commands.Product.UpdateProduct;
-using Application.Repositories;
+﻿using Application.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Commands.Product.RemoveProduct
 {

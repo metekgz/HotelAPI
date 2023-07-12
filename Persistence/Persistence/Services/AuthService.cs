@@ -95,7 +95,7 @@ namespace Persistence.Services
             if (user != null && user?.RefleshTokenEndDate > DateTime.UtcNow)
             {
                 Token token = _tokenHandler.CreateAccessToken(15,user);
-                await _userService.UpdateRefleshToken(token.RefleshToken, user, token.Expiration, 30);
+                await _userService.UpdateRefleshToken(token.RefleshToken, user, token.Expiration, 1000);
                 return token;
             }
             else

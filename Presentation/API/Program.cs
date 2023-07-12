@@ -14,6 +14,8 @@ using Serilog;
 using Serilog.Context;
 using Serilog.Core;
 using Serilog.Sinks.MSSqlServer;
+using SignalR;
+using SignalR.Hubs;
 using System.Collections.ObjectModel;
 using System.Text;
 
@@ -26,6 +28,8 @@ builder.Services.AddPersistenceServices();
 builder.Services.AddApplicationServices();
 
 builder.Services.AddInfrastructureServices();
+
+builder.Services.AddSignalRServices();
 
 builder.Services.AddStorage<LocalStorage>();
 
@@ -48,7 +52,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 //builder.Services.AddStorage<StorageType.Local>();
 
 // verilen linkdeki bütün headerlara, tüm methodlara izin ver
-builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
 
 // fluent validation'ý tanýtmak için configuration yapýldý
 builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>()).AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>()).ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
@@ -135,5 +139,7 @@ app.Use(async (context, next) =>
     LogContext.PushProperty("UserName", username);
     await next();
 });
+
+app.MapHubs();
 
 app.Run();
