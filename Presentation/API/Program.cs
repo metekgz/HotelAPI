@@ -1,6 +1,7 @@
 using API.Configurations.ColumnWriter;
 using Application;
 using Application.Validators.Products;
+using ETicaretAPI.API.Extensions;
 using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Filters;
@@ -107,6 +108,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//app.UseExceptionHandler();
+
+app.ConfigureExceptionHandler<Program>(app.Services.GetRequiredService<ILogger<Program>>());
+
 app.UseStaticFiles();
 
 // loglanmasýný istediðimiz yere koymalýyýz ben https ve cors politikalarýný da loglamak istediðim için buraya koydum
@@ -127,7 +132,7 @@ app.MapControllers();
 app.Use(async (context, next) =>
 {
     var username = context.User?.Identity?.IsAuthenticated != null || true ? context.User.Identity.Name : null;
-    LogContext.PushProperty("UserName",username);
+    LogContext.PushProperty("UserName", username);
     await next();
 });
 
