@@ -15,13 +15,15 @@ using Serilog.Context;
 using Serilog.Core;
 using Serilog.Sinks.MSSqlServer;
 using SignalR;
-using SignalR.Hubs;
 using System.Collections.ObjectModel;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddHttpContextAccessor(); // client tarafýndan gelen requesti oluþturulan httpcontext nesnesine katmanlardaki classlar üzerinden eriþmemizi saðlayan servisdir.
 
 builder.Services.AddPersistenceServices();
 
@@ -44,7 +46,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidAudience = builder.Configuration["Token:Audience"],
         ValidIssuer = builder.Configuration["Token:Issuer"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:SecurityKey"])),
-        LifetimeValidator = (notBefore, expires, securityToken, validationParameters) => expires != null ? expires > DateTime.UtcNow : false
+        LifetimeValidator = (notBefore, expires, securityToken, validationParameters) => expires != null ? expires > DateTime.UtcNow : false,
+        NameClaimType = ClaimTypes.Name 
     };
 });
 

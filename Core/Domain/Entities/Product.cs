@@ -17,5 +17,6 @@ namespace Domain.Entities
         // her product'ın birden fazla room olduğu ifade edilir
         public ICollection<Room> Rooms { get; set; }
         public ICollection<ProductImageFile> ProductImageFiles { get; }
+        public ICollection<HotelProductItem> HotelProductItems { get; set; }
     }
 }

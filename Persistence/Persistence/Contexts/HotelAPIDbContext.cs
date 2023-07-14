@@ -3,15 +3,10 @@ using Domain.Entities.Common;
 using Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.Contexts
 {
-    public class HotelAPIDbContext : IdentityDbContext<AppUser,AppRole,string>
+    public class HotelAPIDbContext : IdentityDbContext<AppUser, AppRole, string>
     {
         public HotelAPIDbContext(DbContextOptions options) : base(options)
         { }
@@ -22,7 +17,20 @@ namespace Persistence.Contexts
         public DbSet<Domain.Entities.File> Files { get; set; }
         public DbSet<ProductImageFile> ProductImageFiles { get; set; }
         public DbSet<InvoiceFile> InvoiceFiles { get; set; }
+        public DbSet<HotelProduct> HotelProducts { get; set; }
+        public DbSet<HotelProductItem> HotelProductItems { get; set; }
 
+        // rooom ile hotelProduct'ın bire bir ilişkili olduğunu tabloya aktarmak için:
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            // id nin primary key olduğunu belirtmek için
+            builder.Entity<Room>().HasKey(p => p.Id);
+            // bire bir iliişki ile bağlamak için
+            builder.Entity<HotelProduct>().HasOne(p => p.Room).WithOne(r => r.HotelProduct).HasForeignKey<Room>(p => p.Id);
+
+            // normal dbcontext değil de IdentityDbContext kullandığım için OnModelCreating override ettiğim için en son bu kodu yazmam gerekiyor
+            base.OnModelCreating(builder);
+        }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

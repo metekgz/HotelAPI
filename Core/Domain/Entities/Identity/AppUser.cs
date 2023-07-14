@@ -6,5 +6,6 @@ namespace Domain.Entities.Identity
         public string NameSurname { get; set; }
         public string? RefleshToken { get; set; }
         public DateTime? RefleshTokenEndDate { get; set; }
+        public ICollection<HotelProduct> HotelProducts { get; set; }
     }
 }

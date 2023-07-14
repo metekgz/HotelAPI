@@ -3,16 +3,10 @@ using Application.Abstractions.Services.Authentications;
 using Application.Repositories;
 using Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;
 using Persistence.Repositories;
 using Persistence.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence
 {
@@ -44,11 +38,18 @@ namespace Persistence
             services.AddScoped<IInvoiceFileWriteRepository, InvoiceFileWriteRepository>();
             services.AddScoped<IProductImageFileReadRepository, ProductImageFileReadRepository>();
             services.AddScoped<IProductImageFileWriteRepository, ProductImageFileWriteRepository>();
+            services.AddScoped<IHotelProductReadRepository, HotelProductReadRepository>();
+            services.AddScoped<IHotelProductWriteRepository, HotelProductWriteRepository>();
+            services.AddScoped<IHotelProductItemReadRepository, HotelProductItemReadRepository>();
+            services.AddScoped<IHotelProductItemWriteRepository, HotelProductItemWriteRepository>();
+          
+
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IInternalAuthentication, AuthService>();
             services.AddScoped<IExternalAuthentication, AuthService>();
+            services.AddScoped<IHotelProductService, HotelProductService>();
 
         }
     }

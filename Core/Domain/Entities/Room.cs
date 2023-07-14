@@ -1,9 +1,4 @@
 ﻿using Domain.Entities.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
@@ -11,6 +6,8 @@ namespace Domain.Entities
     {
         public Guid CustomerId { get; set; }
         public string Description { get; set; }
+
+        public HotelProduct HotelProduct { get; set; }
 
         // room ve product arasındaki ilişki
         // bir room'ın birden fazla product'ı olduğunu ifade eder
