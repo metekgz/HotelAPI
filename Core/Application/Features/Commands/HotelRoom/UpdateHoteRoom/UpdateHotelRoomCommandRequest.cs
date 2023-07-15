@@ -11,7 +11,7 @@ namespace Application.Features.Commands.HotelRoom.UpdateHoteRoom
     {
         public string Id { get; set; }
         public string RoomName { get; set; }
-        public string Price { get; set; }
+        public int Price { get; set; }
         public string Description { get; set; }
     }
 }

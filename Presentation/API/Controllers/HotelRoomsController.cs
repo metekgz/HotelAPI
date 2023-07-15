@@ -18,11 +18,11 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HotelRooms : ControllerBase
+    public class HotelRoomsController : ControllerBase
     {
         readonly IMediator _mediator;
 
-        public HotelRooms(IMediator mediator)
+        public HotelRoomsController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -35,7 +35,6 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = "Admin")]
         public async Task<IActionResult> Post(CreateHotelRoomCommandRequest createHotelRoomCommandRequest)
         {
             CreateHotelRoomCommandResponse response = await _mediator.Send(createHotelRoomCommandRequest);
