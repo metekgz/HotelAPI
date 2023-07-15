@@ -16,7 +16,7 @@ namespace Application.Features.Queries.Product.GetAllProduct
         {
             _productReadRepository = productReadRepository;
         }
-        public Task<GetAllProductQueryResponse> Handle(GetAllProductQueryRequest request, CancellationToken cancellationToken)
+        public async Task<GetAllProductQueryResponse> Handle(GetAllProductQueryRequest request, CancellationToken cancellationToken)
         {
             var totalCount = _productReadRepository.GetAll(false).Count();
             // sayflardaki gösterilecek data için skip kullandım
@@ -38,7 +38,7 @@ namespace Application.Features.Queries.Product.GetAllProduct
                 TotalCount = totalCount
             };
 
-            return Task.FromResult(response);
+            return await Task.FromResult(response);
         }
     }
 }

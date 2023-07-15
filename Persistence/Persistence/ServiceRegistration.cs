@@ -42,8 +42,8 @@ namespace Persistence
             services.AddScoped<IHotelProductWriteRepository, HotelProductWriteRepository>();
             services.AddScoped<IHotelProductItemReadRepository, HotelProductItemReadRepository>();
             services.AddScoped<IHotelProductItemWriteRepository, HotelProductItemWriteRepository>();
-          
-
+            services.AddScoped<IHotelRoomReadRepository, HotelRoomReadRepository>();
+            services.AddScoped<IHotelRoomWriteRepository, HotelRoomWriteRepository>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();

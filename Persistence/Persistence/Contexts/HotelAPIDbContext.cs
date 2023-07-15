@@ -19,6 +19,8 @@ namespace Persistence.Contexts
         public DbSet<InvoiceFile> InvoiceFiles { get; set; }
         public DbSet<HotelProduct> HotelProducts { get; set; }
         public DbSet<HotelProductItem> HotelProductItems { get; set; }
+        public DbSet<HotelRoom> HotelRooms { get; set; }
+
 
         // rooom ile hotelProduct'ın bire bir ilişkili olduğunu tabloya aktarmak için:
         protected override void OnModelCreating(ModelBuilder builder)

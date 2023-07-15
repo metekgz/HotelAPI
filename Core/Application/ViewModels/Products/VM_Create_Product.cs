@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.ViewModels.Products
 {
-    public class VM_Create_Product
+    public class VM_Create_HotelRooms
     {
         public string Name { get; set; }
         public int Stock { get; set; }

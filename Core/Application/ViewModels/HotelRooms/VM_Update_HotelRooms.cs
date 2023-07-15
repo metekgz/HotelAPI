@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.ViewModels.Products
+namespace Application.ViewModels.HotelRooms
 {
     public class VM_Update_HotelRooms
     {
         public string Id { get; set; }
-        public string Name { get; set; }
-        public int Stock { get; set; }
-        public float Price { get; set; }
+        public string RoomName { get; set; }
+        public string Price { get; set; }
+        public string Description { get; set; }
 
     }
 }
